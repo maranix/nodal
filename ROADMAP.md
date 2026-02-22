@@ -10,9 +10,8 @@
 
 ### 1.1 Project Setup
 - [x] Initialize Flutter Project (`flutter create nodal`).
-- [x] Setup Folder Structure (Features: `profile`, core`, ...).
-- [x] Add Sqlite
-- [x] Define `Profile` Model:
+- [ ] Setup Folder Structure (Features: `profile`, core`, ...).
+- [ ] Define `Profile` Model:
     - `id` (UUID)
     - `name` (String)
     - `dob` (DateTime - for dynamic Age)

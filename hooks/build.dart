@@ -9,7 +9,7 @@ void main(List<String> args) async {
     if (config.buildCodeAssets) {
       final cBuilder = CBuilder.library(
         name: 'sqlite',
-        assetName: 'src/third_party/sqlite/sqlite3.g.dart',
+        assetName: 'src/third_party/sqlite3.g.dart',
         sources: ['third_party/sqlite/sqlite3.c'],
       );
 

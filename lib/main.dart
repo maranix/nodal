@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:nodal/src/feature/profile/model/profile_model.dart';
 import 'package:nodal/src/feature/profile/repository/profile_repository.dart';
-import 'package:nodal/src/third_party/sqlite/sqlite3.dart';
+import 'package:nodal/src/third_party/sqlite3.g.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -71,7 +72,7 @@ class MainApp extends StatelessWidget {
           children: [
             FloatingActionButton.small(
               onPressed: () {
-                print(Sqlite.versionNumber);
+                print(sqlite3_libversion().cast<Utf8>().toDartString());
               },
               child: Icon(Icons.storage),
             ),
