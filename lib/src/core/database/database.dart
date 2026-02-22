@@ -8,6 +8,6 @@
 /// ```
 library;
 
-export 'sqlite_client.dart';
-export 'sqlite_client_exception.dart';
-export 'sqlite_query_result.dart';
+export 'sqlite/sqlite_client.dart';
+export 'sqlite/sqlite_client_exception.dart';
+export 'sqlite/sqlite_query_result.dart';

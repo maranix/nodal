@@ -1,7 +1,7 @@
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 
-import 'package:nodal/src/core/database/sqlite_query_result.dart';
-import 'package:nodal/src/core/database/sqlite_client_exception.dart';
+import 'package:nodal/src/core/database/sqlite/sqlite_query_result.dart';
+import 'package:nodal/src/core/database/sqlite/sqlite_client_exception.dart';
 
 /// The abstract interface for interacting with a SQLite database.
 ///
