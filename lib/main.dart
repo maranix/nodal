@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:nodal/src/feature/profile/model/profile_model.dart';
 import 'package:nodal/src/feature/profile/repository/profile_repository.dart';
-import 'package:nodal/src/third_party/sqlite3.g.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -66,27 +64,15 @@ class MainApp extends StatelessWidget {
             return Center(child: Text('Hello World!'));
           },
         ),
-        floatingActionButton: Column(
-          spacing: 4,
-          mainAxisAlignment: .end,
-          children: [
-            FloatingActionButton.small(
-              onPressed: () {
-                print(sqlite3_libversion().cast<Utf8>().toDartString());
-              },
-              child: Icon(Icons.storage),
-            ),
-            FloatingActionButton.small(
-              onPressed: () async {
-                final date = DateTime.now();
+        floatingActionButton: FloatingActionButton.small(
+          onPressed: () async {
+            final date = DateTime.now();
 
-                await ProfileRepository().create(
-                  .defaults(firstName: date.toIso8601String(), dob: date),
-                );
-              },
-              child: Icon(Icons.add),
-            ),
-          ],
+            await ProfileRepository().create(
+              .defaults(firstName: date.toIso8601String(), dob: date),
+            );
+          },
+          child: Icon(Icons.add),
         ),
       ),
     );
