@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodal/src/core/router/route_enums.dart';
 import 'package:nodal/src/core/router/route_transition.dart';
+import 'package:nodal/src/core/theme/theme.dart';
 import 'package:nodal/src/core/widgets/widgets.dart';
 
 part 'router.g.dart';
@@ -16,13 +17,8 @@ final router = GoRouter(routes: $appRoutes, initialLocation: RoutePath.root);
 final class RootScreenRoute extends GoRouteData with $RootScreenRoute {
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    final bgColor = Color(0xFFFFFFFF).withValues(colorSpace: .displayP3);
-    final luminance = bgColor.computeLuminance();
-
-    final textColor = switch (luminance) {
-      >= 0.5 => Color(0xFF000000).withValues(colorSpace: .displayP3),
-      _ => bgColor,
-    };
+    final bgColor = AppTheme.of(context).primaryColor;
+    final textColor = AppTheme.of(context).textColor;
 
     return CustomTransitionPage(
       key: state.pageKey,
@@ -49,6 +45,10 @@ final class RootScreenRoute extends GoRouteData with $RootScreenRoute {
                 onTap: () => ProfilesRoute(step: .create).go(context),
                 label: 'Profile Creation Page',
               ),
+              RawButton(
+                onTap: () => AppTheme.of(context).toggleTheme(),
+                label: 'Theme Toggle',
+              ),
             ],
           ),
         ),
@@ -65,13 +65,8 @@ final class ProfilesRoute extends GoRouteData with $ProfilesRoute {
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    final bgColor = Color(0xFFFFFFFF).withValues(colorSpace: .displayP3);
-    final luminance = bgColor.computeLuminance();
-
-    final textColor = switch (luminance) {
-      >= 0.5 => Color(0xFF000000).withValues(colorSpace: .displayP3),
-      _ => bgColor,
-    };
+    final bgColor = AppTheme.of(context).primaryColor;
+    final textColor = AppTheme.of(context).textColor;
 
     return CustomTransitionPage(
       key: state.pageKey,
