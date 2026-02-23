@@ -25,6 +25,7 @@ final class RootScreenRoute extends GoRouteData with $RootScreenRoute {
     };
 
     return CustomTransitionPage(
+      key: state.pageKey,
       transitionsBuilder: (context, animation, animation2, child) =>
           PageRouteTransition.slide(
             context: context,
@@ -98,7 +99,10 @@ final class ProfilesRoute extends GoRouteData with $ProfilesRoute {
                   'Select Profile',
                   style: TextStyle(color: textColor, fontSize: 16),
                 ),
-                RawButton(onTap: () => context.pop(), label: 'Home'),
+                RawButton(
+                  onTap: () => RootScreenRoute().go(context),
+                  label: 'Home',
+                ),
               ],
             ),
           ),
@@ -114,7 +118,10 @@ final class ProfilesRoute extends GoRouteData with $ProfilesRoute {
                   'Create Profile',
                   style: TextStyle(color: textColor, fontSize: 16),
                 ),
-                RawButton(onTap: () => context.pop(), label: 'Home'),
+                RawButton(
+                  onTap: () => RootScreenRoute().go(context),
+                  label: 'Home',
+                ),
               ],
             ),
           ),
@@ -130,7 +137,10 @@ final class ProfilesRoute extends GoRouteData with $ProfilesRoute {
                   'Manage Profile',
                   style: TextStyle(color: textColor, fontSize: 16),
                 ),
-                RawButton(onTap: () => context.pop(), label: 'Home'),
+                RawButton(
+                  onTap: () => RootScreenRoute().go(context),
+                  label: 'Home',
+                ),
               ],
             ),
           ),
