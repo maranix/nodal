@@ -1,17 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nodal/src/core/router/route_enums.dart';
+import 'package:nodal/src/core/router/route_transition.dart';
 import 'package:nodal/src/core/widgets/widgets.dart';
 
 part 'router.g.dart';
 
-final router = GoRouter(routes: $appRoutes, initialLocation: '/');
+final router = GoRouter(routes: $appRoutes, initialLocation: RoutePath.root);
 
-@TypedGoRoute<HomeScreenRoute>(
-  path: '/',
-  routes: [TypedGoRoute<ProfileSelectionRoute>(path: 'profiles/select')],
+@TypedGoRoute<RootScreenRoute>(
+  path: RoutePath.root,
+  routes: [TypedGoRoute<ProfilesRoute>(path: RoutePath.profiles)],
 )
 @immutable
-final class HomeScreenRoute extends GoRouteData with $HomeScreenRoute {
+final class RootScreenRoute extends GoRouteData with $RootScreenRoute {
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     final bgColor = Color(0xFFFFFFFF).withValues(colorSpace: .displayP3);
@@ -23,19 +25,13 @@ final class HomeScreenRoute extends GoRouteData with $HomeScreenRoute {
     };
 
     return CustomTransitionPage(
-      key: state.pageKey,
-      transitionDuration: .new(milliseconds: 500),
-      transitionsBuilder: (context, animation, animation2, child) {
-        return SlideTransition(
-          position: animation.drive(
-            Tween<Offset>(
-              begin: const Offset(1.0, 0),
-              end: .zero,
-            ).chain(CurveTween(curve: Curves.easeInOutCubic)),
+      transitionsBuilder: (context, animation, animation2, child) =>
+          PageRouteTransition.slide(
+            context: context,
+            animation: animation,
+            animation2: animation2,
+            child: child,
           ),
-          child: child,
-        );
-      },
       child: ColoredBox(
         color: bgColor,
         child: Center(
@@ -45,8 +41,12 @@ final class HomeScreenRoute extends GoRouteData with $HomeScreenRoute {
             children: [
               Text('Home', style: TextStyle(color: textColor, fontSize: 16)),
               RawButton(
-                onTap: () => ProfileSelectionRoute().go(context),
-                label: 'ProfileSelection',
+                onTap: () => ProfilesRoute(step: .select).go(context),
+                label: 'Profile Selection Page',
+              ),
+              RawButton(
+                onTap: () => ProfilesRoute(step: .create).go(context),
+                label: 'Profile Creation Page',
               ),
             ],
           ),
@@ -57,8 +57,11 @@ final class HomeScreenRoute extends GoRouteData with $HomeScreenRoute {
 }
 
 @immutable
-final class ProfileSelectionRoute extends GoRouteData
-    with $ProfileSelectionRoute {
+final class ProfilesRoute extends GoRouteData with $ProfilesRoute {
+  const ProfilesRoute({this.step});
+
+  final ProfilesRouteStep? step;
+
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     final bgColor = Color(0xFFFFFFFF).withValues(colorSpace: .displayP3);
@@ -72,33 +75,73 @@ final class ProfileSelectionRoute extends GoRouteData
     return CustomTransitionPage(
       key: state.pageKey,
       transitionDuration: .new(milliseconds: 500),
-      transitionsBuilder: (context, animation, animation2, child) {
-        return SlideTransition(
-          position: animation.drive(
-            Tween<Offset>(
-              begin: const Offset(1.0, 0),
-              end: .zero,
-            ).chain(CurveTween(curve: Curves.easeInOutCubic)),
+      transitionsBuilder: (context, animation, animation2, child) =>
+          PageRouteTransition.slide(
+            context: context,
+            animation: animation,
+            animation2: animation2,
+            child: child,
+            slideTransition: switch (step) {
+              .select => .rightToLeft,
+              _ => .leftToRight,
+            },
           ),
-          child: child,
-        );
-      },
-      child: ColoredBox(
-        color: bgColor,
-        child: Center(
-          child: Column(
-            spacing: 24.0,
-            mainAxisAlignment: .center,
-            children: [
-              Text(
-                'ProfileSelection',
-                style: TextStyle(color: textColor, fontSize: 16),
-              ),
-              RawButton(onTap: () => context.pop(), label: 'Home'),
-            ],
+      child: switch (step) {
+        .select => ColoredBox(
+          color: bgColor,
+          child: Center(
+            child: Column(
+              spacing: 24.0,
+              mainAxisAlignment: .center,
+              children: [
+                Text(
+                  'Select Profile',
+                  style: TextStyle(color: textColor, fontSize: 16),
+                ),
+                RawButton(onTap: () => context.pop(), label: 'Home'),
+              ],
+            ),
           ),
         ),
-      ),
+        .create => ColoredBox(
+          color: bgColor,
+          child: Center(
+            child: Column(
+              spacing: 24.0,
+              mainAxisAlignment: .center,
+              children: [
+                Text(
+                  'Create Profile',
+                  style: TextStyle(color: textColor, fontSize: 16),
+                ),
+                RawButton(onTap: () => context.pop(), label: 'Home'),
+              ],
+            ),
+          ),
+        ),
+        _ => ColoredBox(
+          color: bgColor,
+          child: Center(
+            child: Column(
+              spacing: 24.0,
+              mainAxisAlignment: .center,
+              children: [
+                Text(
+                  'Manage Profile',
+                  style: TextStyle(color: textColor, fontSize: 16),
+                ),
+                RawButton(onTap: () => context.pop(), label: 'Home'),
+              ],
+            ),
+          ),
+        ),
+      },
     );
   }
+}
+
+abstract final class RoutePath {
+  static const root = '/';
+  static const dashboard = 'dashboard';
+  static const profiles = 'profiles';
 }

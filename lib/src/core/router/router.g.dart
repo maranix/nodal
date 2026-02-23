@@ -6,21 +6,18 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$homeScreenRoute];
+List<RouteBase> get $appRoutes => [$rootScreenRoute];
 
-RouteBase get $homeScreenRoute => GoRouteData.$route(
+RouteBase get $rootScreenRoute => GoRouteData.$route(
   path: '/',
-  factory: $HomeScreenRoute._fromState,
+  factory: $RootScreenRoute._fromState,
   routes: [
-    GoRouteData.$route(
-      path: 'profiles/select',
-      factory: $ProfileSelectionRoute._fromState,
-    ),
+    GoRouteData.$route(path: 'profiles', factory: $ProfilesRoute._fromState),
   ],
 );
 
-mixin $HomeScreenRoute on GoRouteData {
-  static HomeScreenRoute _fromState(GoRouterState state) => HomeScreenRoute();
+mixin $RootScreenRoute on GoRouteData {
+  static RootScreenRoute _fromState(GoRouterState state) => RootScreenRoute();
 
   @override
   String get location => GoRouteData.$location('/');
@@ -39,12 +36,24 @@ mixin $HomeScreenRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin $ProfileSelectionRoute on GoRouteData {
-  static ProfileSelectionRoute _fromState(GoRouterState state) =>
-      ProfileSelectionRoute();
+mixin $ProfilesRoute on GoRouteData {
+  static ProfilesRoute _fromState(GoRouterState state) => ProfilesRoute(
+    step: _$convertMapValue(
+      'step',
+      state.uri.queryParameters,
+      _$ProfilesRouteStepEnumMap._$fromName,
+    ),
+  );
+
+  ProfilesRoute get _self => this as ProfilesRoute;
 
   @override
-  String get location => GoRouteData.$location('/profiles/select');
+  String get location => GoRouteData.$location(
+    '/profiles',
+    queryParams: {
+      if (_self.step != null) 'step': _$ProfilesRouteStepEnumMap[_self.step!],
+    },
+  );
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -58,4 +67,24 @@ mixin $ProfileSelectionRoute on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+const _$ProfilesRouteStepEnumMap = {
+  ProfilesRouteStep.manage: 'manage',
+  ProfilesRouteStep.select: 'select',
+  ProfilesRouteStep.create: 'create',
+};
+
+T? _$convertMapValue<T>(
+  String key,
+  Map<String, String> map,
+  T? Function(String) converter,
+) {
+  final value = map[key];
+  return value == null ? null : converter(value);
+}
+
+extension<T extends Enum> on Map<T, String> {
+  T? _$fromName(String? value) =>
+      entries.where((element) => element.value == value).firstOrNull?.key;
 }
