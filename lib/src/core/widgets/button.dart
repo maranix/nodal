@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:nodal/src/core/theme/colors.dart';
 import 'package:nodal/src/core/theme/theme.dart';
 
 class RawButton extends StatefulWidget {
@@ -23,15 +22,9 @@ class _RawButtonState extends State<RawButton> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.maybeOf(context);
-    final containerColor = theme?.primaryButtonColor ?? const Color(0xFF007AFF);
-
-    final Color textColor =
-        theme?.textColor ??
-        switch (containerColor.computeLuminance()) {
-          0.5 => Colors.gray,
-          _ => Colors.black,
-        };
+    final containerColor =
+        widget.color ?? AppTheme.primaryButtonOf(context);
+    final textColor = AppTheme.textColorOf(context);
 
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
@@ -48,7 +41,8 @@ class _RawButtonState extends State<RawButton> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Text(
                 widget.label,
                 style: TextStyle(

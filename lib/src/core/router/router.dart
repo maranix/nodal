@@ -17,8 +17,8 @@ final router = GoRouter(routes: $appRoutes, initialLocation: RoutePath.root);
 final class RootScreenRoute extends GoRouteData with $RootScreenRoute {
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    final bgColor = AppTheme.of(context).primaryColor;
-    final textColor = AppTheme.of(context).textColor;
+    final bgColor = AppTheme.backgroundOf(context);
+    final textColor = AppTheme.textColorOf(context);
 
     return CustomTransitionPage(
       key: state.pageKey,
@@ -46,8 +46,8 @@ final class RootScreenRoute extends GoRouteData with $RootScreenRoute {
                 label: 'Profile Creation Page',
               ),
               RawButton(
-                onTap: () => AppTheme.of(context).toggleTheme(),
-                label: 'Theme Toggle',
+                onTap: () => AppThemeProvider.of(context).setMode(.toggle),
+                label: 'Theme Switch',
               ),
             ],
           ),
@@ -65,8 +65,8 @@ final class ProfilesRoute extends GoRouteData with $ProfilesRoute {
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    final bgColor = AppTheme.of(context).primaryColor;
-    final textColor = AppTheme.of(context).textColor;
+    final bgColor = AppTheme.backgroundOf(context);
+    final textColor = AppTheme.textColorOf(context);
 
     return CustomTransitionPage(
       key: state.pageKey,

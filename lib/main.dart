@@ -5,7 +5,7 @@ import 'package:nodal/src/core/theme/theme.dart';
 
 void main() async {
   usePathUrlStrategy();
-  runApp(AppThemeProvider(data: AppThemeData(), child: const MainApp()));
+  runApp(const AppThemeProvider(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = AppTheme.of(context).primaryColor;
+    final primaryColor = AppTheme.primaryOf(context);
 
     return WidgetsApp.router(
       routerConfig: router,
